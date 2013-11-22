@@ -1,0 +1,54 @@
+﻿<UserControl 
+    x:Class="TasksManager.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:TasksManager"
+    mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="600"             
+    xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices"
+    xmlns:my="clr-namespace:TasksManager.Web"     
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk">
+    <UserControl.DataContext>
+        <local:TasksViewModel/>
+    </UserControl.DataContext>
+    <Grid x:Name="LayoutRoot" Background="White">
+        <sdk:DataGrid ItemsSource="{Binding Tasks}" AutoGenerateColumns="False" Name="taskDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="0,34,0,0">
+            <sdk:DataGrid.Columns>
+                <sdk:DataGridTextColumn x:Name="taskIdColumn" Binding="{Binding Path=TaskId, Mode=OneWay}" Header="Task Id" IsReadOnly="True" Width="SizeToHeader" />
+                <sdk:DataGridTextColumn x:Name="taskNameColumn" Binding="{Binding Path=TaskName}" Header="Task Name" Width="Auto" />
+                <sdk:DataGridTextColumn x:Name="descriptionColumn" Binding="{Binding Path=Description}" Header="Description" Width="*" />
+                <sdk:DataGridTemplateColumn x:Name="startDateColumn" Header="Start Date" Width="SizeToHeader">
+                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <sdk:DatePicker SelectedDate="{Binding Path=StartDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, TargetNullValue=''}" />
+                        </DataTemplate>
+                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                    <sdk:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=StartDate, StringFormat=\{0:d\}}" />
+                        </DataTemplate>
+                    </sdk:DataGridTemplateColumn.CellTemplate>
+                </sdk:DataGridTemplateColumn>
+                <sdk:DataGridTemplateColumn x:Name="endDateColumn" Header="End Date" Width="SizeToHeader">
+                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <sdk:DatePicker SelectedDate="{Binding Path=EndDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, TargetNullValue=''}" />
+                        </DataTemplate>
+                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                    <sdk:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=EndDate, StringFormat=\{0:d\}}" />
+                        </DataTemplate>
+                    </sdk:DataGridTemplateColumn.CellTemplate>
+                </sdk:DataGridTemplateColumn>
+            </sdk:DataGrid.Columns>
+        </sdk:DataGrid>
+        <Button Command="{Binding SearchByDateCommand}" Content="Search By Date" Height="23" HorizontalAlignment="Left" Margin="262,0,0,0" Name="searchButton" VerticalAlignment="Top" Width="97"  />
+        <Button Command="{Binding AddTaskCommand}" Name="addTaskButton" Content="Add Task" Height="23" HorizontalAlignment="Left" Margin="365,0,0,0" VerticalAlignment="Top" Width="75" />
+        <Button Command="{Binding SaveChangesCommand}" Name="saveChangesButton" Content="Save Changes" Height="23" HorizontalAlignment="Left" Margin="446,0,0,0" VerticalAlignment="Top" Width="104" />
+        <sdk:DatePicker SelectedDate="{Binding LowerSearchDate, Mode=TwoWay}" Height="23" HorizontalAlignment="Left" Name="lowerDatePicker" VerticalAlignment="Top" Width="120" />
+        <sdk:DatePicker SelectedDate="{Binding UpperSearchDate, Mode=TwoWay}" Height="23" HorizontalAlignment="Left" Margin="128,0,0,0" Name="upperDatePicker" VerticalAlignment="Top" Width="120" />
+    </Grid>
+</UserControl>
